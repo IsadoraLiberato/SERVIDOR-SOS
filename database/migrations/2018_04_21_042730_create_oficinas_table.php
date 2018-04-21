@@ -20,8 +20,8 @@ class CreateOficinasTable extends Migration
             $table->string("bairro");
             $table->string("cep");
             $table->string("nome");
-            $table->integer("cnpj");
-            $table->integer("telefone");
+            $table->string("cnpj");
+            $table->string("telefone");
             $table->string("email");
             $table->string("senha");
             $table->timestamps();

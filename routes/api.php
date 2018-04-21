@@ -2,4 +2,4 @@
 
 use Illuminate\Http\Request;
 
-Route::resource('usuarios','UsuarioController');
+Route::resource('oficinas','OficinaController');
