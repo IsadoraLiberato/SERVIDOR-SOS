@@ -11,11 +11,7 @@
 
 namespace Symfony\Component\HttpKernel\DataCollector;
 
-use Symfony\Component\VarDumper\Caster\CutStub;
-use Symfony\Component\VarDumper\Cloner\ClonerInterface;
-use Symfony\Component\VarDumper\Cloner\Data;
-use Symfony\Component\VarDumper\Cloner\Stub;
-use Symfony\Component\VarDumper\Cloner\VarCloner;
+use Symfony\Component\HttpKernel\DataCollector\Util\ValueExporter;
 
 /**
  * DataCollector.
@@ -30,9 +26,9 @@ abstract class DataCollector implements DataCollectorInterface, \Serializable
     protected $data = array();
 
     /**
-     * @var ClonerInterface
+     * @var ValueExporter
      */
-    private $cloner;
+    private $valueExporter;
 
     public function serialize()
     {
@@ -45,49 +41,18 @@ abstract class DataCollector implements DataCollectorInterface, \Serializable
     }
 
     /**
-     * Converts the variable into a serializable Data instance.
+     * Converts a PHP variable to a string.
      *
-     * This array can be displayed in the template using
-     * the VarDumper component.
+     * @param mixed $var A PHP variable
      *
-     * @param mixed $var
-     *
-     * @return Data
+     * @return string The string representation of the variable
      */
-    protected function cloneVar($var)
+    protected function varToString($var)
     {
-        if ($var instanceof Data) {
-            return $var;
-        }
-        if (null === $this->cloner) {
-            if (!class_exists(CutStub::class)) {
-                throw new \LogicException(sprintf('The VarDumper component is needed for the %s() method. Install symfony/var-dumper version 3.4 or above.', __METHOD__));
-            }
-            $this->cloner = new VarCloner();
-            $this->cloner->setMaxItems(-1);
-            $this->cloner->addCasters($this->getCasters());
+        if (null === $this->valueExporter) {
+            $this->valueExporter = new ValueExporter();
         }
 
-        return $this->cloner->cloneVar($var);
-    }
-
-    /**
-     * @return callable[] The casters to add to the cloner
-     */
-    protected function getCasters()
-    {
-        return array(
-            '*' => function ($v, array $a, Stub $s, $isNested) {
-                if (!$v instanceof Stub) {
-                    foreach ($a as $k => $v) {
-                        if (is_object($v) && !$v instanceof \DateTimeInterface && !$v instanceof Stub) {
-                            $a[$k] = new CutStub($v);
-                        }
-                    }
-                }
-
-                return $a;
-            },
-        );
+        return $this->valueExporter->exportValue($var);
     }
 }

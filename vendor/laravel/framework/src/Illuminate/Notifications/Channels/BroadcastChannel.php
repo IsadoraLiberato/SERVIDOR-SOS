@@ -48,7 +48,7 @@ class BroadcastChannel
                   ->onQueue($message->queue);
         }
 
-        return $this->events->dispatch($event);
+        return $this->events->fire($event);
     }
 
     /**
@@ -70,6 +70,8 @@ class BroadcastChannel
             return $notification->toArray($notifiable);
         }
 
-        throw new RuntimeException('Notification is missing toArray method.');
+        throw new RuntimeException(
+            'Notification is missing toArray method.'
+        );
     }
 }
