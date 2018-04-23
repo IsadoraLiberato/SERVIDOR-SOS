@@ -11,6 +11,8 @@
 
 namespace Symfony\Component\HttpKernel\CacheClearer;
 
+use Psr\Cache\CacheItemPoolInterface;
+
 /**
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -18,23 +20,9 @@ class Psr6CacheClearer implements CacheClearerInterface
 {
     private $pools = array();
 
-    public function __construct(array $pools = array())
+    public function addPool(CacheItemPoolInterface $pool)
     {
-        $this->pools = $pools;
-    }
-
-    public function hasPool($name)
-    {
-        return isset($this->pools[$name]);
-    }
-
-    public function clearPool($name)
-    {
-        if (!isset($this->pools[$name])) {
-            throw new \InvalidArgumentException(sprintf('Cache pool not found: %s.', $name));
-        }
-
-        return $this->pools[$name]->clear();
+        $this->pools[] = $pool;
     }
 
     /**

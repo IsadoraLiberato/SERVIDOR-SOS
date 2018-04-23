@@ -11,11 +11,10 @@
 
 namespace Symfony\Component\Debug\Tests\FatalErrorHandler;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\Debug\FatalErrorHandler\UndefinedFunctionFatalErrorHandler;
 
-class UndefinedFunctionFatalErrorHandlerTest extends TestCase
+class UndefinedFunctionFatalErrorHandlerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider provideUndefinedFunctionData
@@ -26,7 +25,7 @@ class UndefinedFunctionFatalErrorHandlerTest extends TestCase
         $exception = $handler->handleError($error, new FatalErrorException('', 0, $error['type'], $error['file'], $error['line']));
 
         $this->assertInstanceOf('Symfony\Component\Debug\Exception\UndefinedFunctionException', $exception);
-        // class names are case insensitive and PHP do not return the same
+        // class names are case insensitive and PHP/HHVM do not return the same
         $this->assertSame(strtolower($translatedMessage), strtolower($exception->getMessage()));
         $this->assertSame($error['type'], $exception->getSeverity());
         $this->assertSame($error['file'], $exception->getFile());

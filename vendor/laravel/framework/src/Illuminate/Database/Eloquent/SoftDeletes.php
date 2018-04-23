@@ -30,13 +30,11 @@ trait SoftDeletes
     {
         $this->forceDeleting = true;
 
-        return tap($this->delete(), function ($deleted) {
-            $this->forceDeleting = false;
+        $deleted = $this->delete();
 
-            if ($deleted) {
-                $this->fireModelEvent('forceDeleted', false);
-            }
-        });
+        $this->forceDeleting = false;
+
+        return $deleted;
     }
 
     /**
@@ -47,8 +45,6 @@ trait SoftDeletes
     protected function performDeleteOnModel()
     {
         if ($this->forceDeleting) {
-            $this->exists = false;
-
             return $this->newQueryWithoutScopes()->where($this->getKeyName(), $this->getKey())->forceDelete();
         }
 
@@ -64,19 +60,9 @@ trait SoftDeletes
     {
         $query = $this->newQueryWithoutScopes()->where($this->getKeyName(), $this->getKey());
 
-        $time = $this->freshTimestamp();
+        $this->{$this->getDeletedAtColumn()} = $time = $this->freshTimestamp();
 
-        $columns = [$this->getDeletedAtColumn() => $this->fromDateTime($time)];
-
-        $this->{$this->getDeletedAtColumn()} = $time;
-
-        if ($this->timestamps && ! is_null($this->getUpdatedAtColumn())) {
-            $this->{$this->getUpdatedAtColumn()} = $time;
-
-            $columns[$this->getUpdatedAtColumn()] = $this->fromDateTime($time);
-        }
-
-        $query->update($columns);
+        $query->update([$this->getDeletedAtColumn() => $this->fromDateTime($time)]);
     }
 
     /**
@@ -166,6 +152,6 @@ trait SoftDeletes
      */
     public function getQualifiedDeletedAtColumn()
     {
-        return $this->qualifyColumn($this->getDeletedAtColumn());
+        return $this->getTable().'.'.$this->getDeletedAtColumn();
     }
 }
