@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit36a53cf013220b2a72fe3804f7fe334f
+class ComposerStaticInitc6bcaf56a5e1c7dfd7796974562c2a83
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
@@ -14,8 +14,8 @@ class ComposerStaticInit36a53cf013220b2a72fe3804f7fe334f
         '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
-        '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         'e7223560d890eab89cda23685e711e2c' => __DIR__ . '/..' . '/psy/psysh/src/Psy/functions.php',
+        '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -113,8 +113,8 @@ class ComposerStaticInit36a53cf013220b2a72fe3804f7fe334f
         'phpDocumentor\\Reflection\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
-            1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
-            2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+            1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+            2 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
         ),
         'XdgBaseDir\\' => 
         array (
@@ -3632,10 +3632,10 @@ class ComposerStaticInit36a53cf013220b2a72fe3804f7fe334f
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit36a53cf013220b2a72fe3804f7fe334f::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit36a53cf013220b2a72fe3804f7fe334f::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit36a53cf013220b2a72fe3804f7fe334f::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit36a53cf013220b2a72fe3804f7fe334f::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitc6bcaf56a5e1c7dfd7796974562c2a83::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitc6bcaf56a5e1c7dfd7796974562c2a83::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitc6bcaf56a5e1c7dfd7796974562c2a83::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitc6bcaf56a5e1c7dfd7796974562c2a83::$classMap;
 
         }, null, ClassLoader::class);
     }
