@@ -63,12 +63,10 @@ class ClienteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($email)
+    public function show($id)
     {
         //retorna um cliente de acordo com o id passado
-        $cliente = Cliente::where([
-             'email'=>$email   
-        ])->get();
+        $cliente = Cliente::find($id);
 
         return response()->json($cliente);
     }

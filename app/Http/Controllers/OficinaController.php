@@ -7,18 +7,21 @@ use App\Oficina;
 
 class OficinaController extends Controller
 {
-
-  public function  __construct(){
-      header("Acess-Control-Allow-Origin:*");
-  }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    public function  __construct(){
+        header("Acess-Control-Allow-Origin:*");
+    }
+
     public function index()
     {
-
+        //
+        //recuperando arquivo do banco
+        $oficinas = Oficina::all();
+        return response()->json($oficinas);
     }
 
     /**
@@ -39,14 +42,15 @@ class OficinaController extends Controller
      */
     public function store(Request $request)
     {
-      $dados = $request->all();
-      $oficina = Oficina::create($dados);
+        //
+        $dados = $request->all();
+        $oficina = Oficina::create($dados);
 
-      if($oficina){
-        return response()->json(['data'=>$oficina,'status'=>true]);
-      }else{
-        return response()->json(['data'=>"Erro ao salvar produto",'status'=>false]);
-      }
+        if($oficina){
+            return response()->json($oficina);
+        }else{
+            return response()->json(['data'=>"Erro ao salvar produto",'status'=>false]);
+        }
     }
 
     /**
@@ -57,6 +61,7 @@ class OficinaController extends Controller
      */
     public function show($id)
     {
+        //
         $oficina = Oficina::find($id);
 
         return response()->json(['data'=>$oficina,'status'=>true]);

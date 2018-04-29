@@ -11,12 +11,13 @@
 
 namespace Symfony\Component\HttpKernel\Tests\Bundle;
 
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Tests\Fixtures\ExtensionNotValidBundle\ExtensionNotValidBundle;
 use Symfony\Component\HttpKernel\Tests\Fixtures\ExtensionPresentBundle\ExtensionPresentBundle;
+use Symfony\Component\HttpKernel\Tests\Fixtures\ExtensionAbsentBundle\ExtensionAbsentBundle;
+use Symfony\Component\HttpKernel\Tests\Fixtures\ExtensionPresentBundle\Command\FooCommand;
 
-class BundleTest extends TestCase
+class BundleTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetContainerExtension()
     {
@@ -26,6 +27,20 @@ class BundleTest extends TestCase
             'Symfony\Component\HttpKernel\Tests\Fixtures\ExtensionPresentBundle\DependencyInjection\ExtensionPresentExtension',
             $bundle->getContainerExtension()
         );
+    }
+
+    public function testRegisterCommands()
+    {
+        $cmd = new FooCommand();
+        $app = $this->getMockBuilder('Symfony\Component\Console\Application')->getMock();
+        $app->expects($this->once())->method('add')->with($this->equalTo($cmd));
+
+        $bundle = new ExtensionPresentBundle();
+        $bundle->registerCommands($app);
+
+        $bundle2 = new ExtensionAbsentBundle();
+
+        $this->assertNull($bundle2->registerCommands($app));
     }
 
     /**
@@ -38,32 +53,17 @@ class BundleTest extends TestCase
         $bundle->getContainerExtension();
     }
 
-    public function testBundleNameIsGuessedFromClass()
+    public function testHttpKernelRegisterCommandsIgnoresCommandsThatAreRegisteredAsServices()
     {
-        $bundle = new GuessedNameBundle();
+        $container = new ContainerBuilder();
+        $container->register('console.command.symfony_component_httpkernel_tests_fixtures_extensionpresentbundle_command_foocommand', 'Symfony\Component\HttpKernel\Tests\Fixtures\ExtensionPresentBundle\Command\FooCommand');
 
-        $this->assertSame('Symfony\Component\HttpKernel\Tests\Bundle', $bundle->getNamespace());
-        $this->assertSame('GuessedNameBundle', $bundle->getName());
+        $application = $this->getMockBuilder('Symfony\Component\Console\Application')->getMock();
+        // add() is never called when the found command classes are already registered as services
+        $application->expects($this->never())->method('add');
+
+        $bundle = new ExtensionPresentBundle();
+        $bundle->setContainer($container);
+        $bundle->registerCommands($application);
     }
-
-    public function testBundleNameCanBeExplicitlyProvided()
-    {
-        $bundle = new NamedBundle();
-
-        $this->assertSame('ExplicitlyNamedBundle', $bundle->getName());
-        $this->assertSame('Symfony\Component\HttpKernel\Tests\Bundle', $bundle->getNamespace());
-        $this->assertSame('ExplicitlyNamedBundle', $bundle->getName());
-    }
-}
-
-class NamedBundle extends Bundle
-{
-    public function __construct()
-    {
-        $this->name = 'ExplicitlyNamedBundle';
-    }
-}
-
-class GuessedNameBundle extends Bundle
-{
 }
