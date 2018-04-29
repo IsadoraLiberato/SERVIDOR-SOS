@@ -50,7 +50,7 @@ class ClienteController extends Controller
         $cliente = Cliente::create($dados);
 
         if($cliente){
-          return response()->json(['data'=>$cliente,'status'=>true]);
+          return response()->json($cliente);
         }else{
           return response()->json(['data'=>"Erro ao inserir cliente",'status'=>false]);
         }
@@ -65,7 +65,10 @@ class ClienteController extends Controller
      */
     public function show($id)
     {
-        //
+        //retorna um cliente de acordo com o id passado
+        $cliente = Cliente::find($id);
+
+        return response()->json($cliente);
     }
 
     /**
