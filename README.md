@@ -12,3 +12,16 @@ retorna um json com a oficina que foi cadastrada.
 http://jhsdev.com/index.php/api/oficina
 
 Retorna um json com todas as oficinas cadastradas.
+
+#Cadastrar um novo cliente
+http://jhsdev.com/index.php/api/clientes
+
+retorna um json com o cliente que foi cadastrado.
+
+#Listar clientes
+http://jhsdev.com/index.php/api/cliente
+
+Retorna um json com todos os clientes cadastrados.
+
+
+
