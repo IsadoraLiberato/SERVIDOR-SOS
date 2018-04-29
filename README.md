@@ -1,15 +1,15 @@
 # SERVIDOR-SOS
 
-#API contruida com o Framework LARAVEL.
+#API construida com o Framework LARAVEL.<br/>
 
-#DocAPI
-#Cadastrar um nova oficina
-http://jhsdev.com/index.php/api/oficinas
+#DocAPI<br/>
+#Cadastrar um nova oficina<br/>
+http://jhsdev.com/index.php/api/oficinas<br/>
 
-retorna um json com a oficina que foi cadastrada.
+retorna um json com a oficina que foi cadastrada.<br/>
 
-#Listar oficinas
-http://jhsdev.com/index.php/api/oficina
+#Listar oficinas<br/>
+http://jhsdev.com/index.php/api/oficina<br/>
 
 Retorna um json com todas as oficinas cadastradas.
 
