@@ -3,25 +3,29 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Oficina;
+use App\Cliente;
 
-class OficinaController extends Controller
+class ClienteController extends Controller
 {
+
+  public function  __construct(){
+      header("Acess-Control-Allow-Origin:*");
+  }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function  __construct(){
-        header("Acess-Control-Allow-Origin:*");
-    }
-
     public function index()
     {
-        //
-        //recuperando arquivo do banco
-        $oficinas = Oficina::all();
-        return response()->json($oficinas);
+        $clientes = Cliente::all();
+        if($clientes)
+        {
+          return response()->json($clientes);
+        }else {
+          return response()->json(['data'=>"Não foi encontrado nenhum cliente",'status'=>false]);
+        }
+
     }
 
     /**
@@ -42,15 +46,15 @@ class OficinaController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $dados = $request->all();
-        $oficina = Oficina::create($dados);
+        $cliente = Cliente::create($dados);
 
-        if($oficina){
-            return response()->json($oficina);
+        if($cliente){
+          return response()->json($cliente);
         }else{
-            return response()->json(['data'=>"Erro ao salvar produto",'status'=>false]);
+          return response()->json(['data'=>"Erro ao inserir cliente",'status'=>false]);
         }
+
     }
 
     /**
@@ -61,10 +65,10 @@ class OficinaController extends Controller
      */
     public function show($id)
     {
-        //
-        $oficina = Oficina::find($id);
+        //retorna um cliente de acordo com o id passado
+        $cliente = Cliente::find($id);
 
-        return response()->json(['data'=>$oficina,'status'=>true]);
+        return response()->json($cliente);
     }
 
     /**
