@@ -5,11 +5,15 @@ use Illuminate\Http\Request;
 Route::resource('oficinas','OficinaController');
 //retorna
 Route::resource('oficina','OficinaController');
+//retorna o id por nome
+Route::resource('oficinaid','OficinaController@getIdOficina');
 //insere
 Route::resource('clientes','ClienteController');
 //retorna
-<<<<<<< HEAD
 Route::resource('cliente','ClienteController');
-=======
-Route::resource('cliente','ClienteController');
->>>>>>> upstream/master
+//insere
+Route::resource('registros','RegistroController');
+//retorna
+Route::resource('registro','RegistroController');
+
+

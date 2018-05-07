@@ -63,12 +63,35 @@ class ClienteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($email)
     {
         //retorna um cliente de acordo com o id passado
-        $cliente = Cliente::find($id);
+        $cliente = Cliente::where([
+             'email'=>$email
+        ])->get();
 
-        return response()->json($cliente);
+
+        $msgError = array(
+            'msg'=>"false"
+        );
+
+        if(count($cliente) > 0){
+            $id = $cliente[0]["id"];
+            $email2 = $cliente[0]["email"];
+            $senha = $cliente[0]["senha"];
+
+    
+            $msgSuccess = array(
+            'msg'=>"true",
+            'id'=>$id,
+            'email'=>$email2,
+            'senha'=>$senha
+            );
+            return response()->json($msgSuccess);
+        }else{
+            return response()->json($msgError);
+        }
+        
     }
 
     /**

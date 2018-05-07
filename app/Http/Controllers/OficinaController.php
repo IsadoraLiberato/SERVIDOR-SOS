@@ -59,13 +59,69 @@ class OficinaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($email)
     {
         //
-        $oficina = Oficina::find($id);
+        //retorna um cliente de acordo com o id passado
+        $oficina = Oficina::where([
+            'email'=>$email
+       ])->get();
 
-        return response()->json(['data'=>$oficina,'status'=>true]);
+
+       $msgError = array(
+           'msg'=>"false"
+       );
+
+       if(count($oficina) > 0){
+           $id = $oficina[0]["id"];
+           $email2 = $oficina[0]["email"];
+           $senha = $oficina[0]["senha"];
+
+   
+           $msgSuccess = array(
+           'msg'=>"true",
+           'id'=>$id,
+           'email'=>$email2,
+           'senha'=>$senha
+           );
+           return response()->json($msgSuccess);
+       }else{
+           return response()->json($msgError);
+       }
+       
+
+        
     }
+    public function getIdOficina($nome)
+    {
+        //
+        //retorna um cliente de acordo com o id passado
+        $oficina = Oficina::where([
+            'nome'=>$nome
+       ])->get();
+
+
+       $msgError = array(
+           'msg'=>"false"
+       );
+
+       if(count($oficina) > 0){
+           $id = $oficina[0]["id"];
+        
+   
+           $msgSuccess = array(
+           'msg'=>"true",
+           'id'=>$id,
+           );
+           return response()->json($msgSuccess);
+       }else{
+           return response()->json($msgError);
+       }
+       
+
+        
+    }
+
 
     /**
      * Show the form for editing the specified resource.
