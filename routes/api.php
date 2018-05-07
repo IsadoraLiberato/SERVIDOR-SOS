@@ -8,8 +8,4 @@ Route::resource('oficina','OficinaController');
 //insere
 Route::resource('clientes','ClienteController');
 //retorna
-<<<<<<< HEAD
 Route::resource('cliente','ClienteController');
-=======
-Route::resource('cliente','ClienteController');
->>>>>>> upstream/master
