@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Cliente;
+use \Illuminate\Support\Facades\DB;
+use App\Registro;
 
-class ClienteController extends Controller
+class RegistroController extends Controller
 {
-
-  public function  __construct(){
-      header("Acess-Control-Allow-Origin:*");
-  }
     /**
      * Display a listing of the resource.
      *
@@ -18,14 +15,7 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        $clientes = Cliente::all();
-        if($clientes)
-        {
-          return response()->json($clientes);
-        }else {
-          return response()->json(['data'=>"Não foi encontrado nenhum cliente",'status'=>false]);
-        }
-
+        //
     }
 
     /**
@@ -46,15 +36,15 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
+        //
         $dados = $request->all();
-        $cliente = Cliente::create($dados);
+        $registro = Registro::create($dados);
 
-        if($cliente){
-          return response()->json($cliente);
+        if($registro){
+            return response()->json($registro);
         }else{
-          return response()->json(['data'=>"Erro ao inserir cliente",'status'=>false]);
+            return response()->json(['status'=>false]);
         }
-
     }
 
     /**
@@ -63,35 +53,30 @@ class ClienteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($email)
+    public function show($id)
     {
-        //retorna um cliente de acordo com o id passado
-        $cliente = Cliente::where([
-             'email'=>$email
-        ])->get();
+        //
+        $oficinaRegistro = DB::table('registros')
+                ->join('oficinas', 'oficinas.id', '=','registros.fk_id_oficina')
+                ->join('clientes', 'clientes.id', '=','registros.fk_id_cliente')
+                ->select('registros.*','clientes.nome')
+                ->where([
+                    'registros.fk_id_oficina'=>$id,
+
+                ])
+                ->orderBy('id','desc')
+                ->take(8)
+                ->get()->toArray();
+
+              
+
+                if($oficinaRegistro){
+                    return response()->json($oficinaRegistro);
+                }else{
+                    return response()->json(['status'=>false]);
+                }
 
 
-        $msgError = array(
-            'msg'=>"false"
-        );
-
-        if(count($cliente) > 0){
-            $id = $cliente[0]["id"];
-            $email2 = $cliente[0]["email"];
-            $senha = $cliente[0]["senha"];
-
-    
-            $msgSuccess = array(
-            'msg'=>"true",
-            'id'=>$id,
-            'email'=>$email2,
-            'senha'=>$senha
-            );
-            return response()->json($msgSuccess);
-        }else{
-            return response()->json($msgError);
-        }
-        
     }
 
     /**
